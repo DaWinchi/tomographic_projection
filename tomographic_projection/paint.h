@@ -12,7 +12,7 @@ private:
 		_ymin, _ymax,   // Минимальное и максимальное значение по у
 		_step_x, _step_y;   // Шаг по х и у
 	/** Исходное изображение(сигнал).*/
-	std::vector<std::vector<double>> _vec_image;
+	std::vector<std::vector<double>> _vecImage;
 	
 
 public:
@@ -22,7 +22,7 @@ public:
 	~Paint();
 
 	/** Функция обмена информацией между классами.*/
-	void Exchange(double left, double right, double low, double up);
+	void exchange(double left, double right, double low, double up);
 
 	/** Функция преобразования х к пиксельному формату.*/
 	Gdiplus::REAL Trans_X(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL x);
@@ -33,7 +33,7 @@ public:
 	Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float width);
 	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height);
 	/** Инициализировать исходное изображение.*/
-	void set_image(const std::vector<std::vector<double>> & vec);
+	void setImage(const std::vector<std::vector<double>> & vec);
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 };

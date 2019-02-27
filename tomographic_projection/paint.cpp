@@ -21,7 +21,7 @@ Paint::~Paint()
 }
 
 /** Функция обмена информацией между классами.*/
-void Paint::Exchange(double left, double right, double low, double up)
+void Paint::exchange(double left, double right, double low, double up)
 {
 	_xmin = left;
 	_xmax = right;
@@ -63,10 +63,10 @@ Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height)
 }
 
 /** Инициализировать исходное изображение.*/
-void Paint::set_image(const std::vector<std::vector<double>> & vec)
+void Paint::setImage(const std::vector<std::vector<double>> & vec)
 {
-	_vec_image.clear();
-	_vec_image = vec;
+	_vecImage.clear();
+	_vecImage = vec;
 }
 
 /** Функия отрисовки.*/
@@ -84,15 +84,15 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 	grBmp.Clear(Color::White);
 
-	if (!_vec_image.empty())
+	if (!_vecImage.empty())
 	{
-		size_t width = _vec_image[0].size();
-		size_t height = _vec_image.size();
+		size_t width = _vecImage[0].size();
+		size_t height = _vecImage.size();
 		for (size_t i = 0; i < height; ++i)
 		{
 			for (size_t j = 0; j < width; ++j)
 			{
-				double val = _vec_image[i][j];
+				double val = _vecImage[i][j];
 				Color color;
 				color = Color::MakeARGB(255 - val, 0, 0, 0);
 				SolidBrush brush(color);

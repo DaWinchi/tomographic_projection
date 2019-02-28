@@ -69,18 +69,19 @@ void Paint::setImage(const std::vector<std::vector<Pixel>> & vec)
 	_vecImage = vec;
 }
 
+/** Инициализировать проекцию.*/
+void Paint::setProjection(const std::vector<std::vector<Pixel>> & vec)
+{
+	_vecTomographicProjection.clear();
+	_vecTomographicProjection = vec;
+}
+
 /** Функия отрисовки.*/
 void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	Graphics gr(lpDrawItemStruct->hDC);
 	Bitmap bmp(lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom, &gr);
 	Graphics grBmp(&bmp);
-
-	Pen penEllipse(Color::Red, 3);
-	SolidBrush brushCathodRect(Color::Blue);
-	SolidBrush brushAnodRect(Color::Red);
-	SolidBrush brushConductorRect(Color::DarkKhaki);
-	SolidBrush brushPoints(Color::Yellow);
 
 	grBmp.Clear(Color::White);
 
@@ -92,6 +93,25 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		for (size_t i = 0; i < height; ++i)
 		{
 			for (size_t j = 0; j < width; ++j)
+			{
+				Color color;
+				color = Color::MakeARGB(255, _vecImage[i][j].red, _vecImage[i][j].green, _vecImage[i][j].blue);
+				bmpBuffer.SetPixel(j, height - 1 - i, color);
+			}
+		}
+
+		Rect rect(0, 0, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+		gr.DrawImage(&bmpBuffer, rect);
+	}
+
+	if (!_vecTomographicProjection.empty())
+	{
+		std::size_t width = _vecTomographicProjection[0].size();
+		std::size_t height = _vecTomographicProjection.size();
+		Bitmap bmpBuffer(_xmax, _ymax);
+		for (std::size_t i = 0; i < height; ++i)
+		{
+			for (std::size_t j = 0; j < width; ++j)
 			{
 				Color color;
 				color = Color::MakeARGB(255, _vecImage[i][j].red, _vecImage[i][j].green, _vecImage[i][j].blue);

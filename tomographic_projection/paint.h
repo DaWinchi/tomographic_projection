@@ -12,9 +12,12 @@ private:
 	double _xmin, _xmax,   // Минимальное и максимальное значение по х
 		_ymin, _ymax,   // Минимальное и максимальное значение по у
 		_step_x, _step_y;   // Шаг по х и у
+
 	/** Исходное изображение(сигнал).*/
 	std::vector<std::vector<Pixel>> _vecImage;
-	
+	/** Томографическая проеция.*/
+	std::vector<std::vector<Pixel>> _vecTomographicProjection;
+
 
 public:
 	/** Конструктор.*/
@@ -35,6 +38,10 @@ public:
 	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height);
 	/** Инициализировать исходное изображение.*/
 	void setImage(const std::vector<std::vector<Pixel>> & vec);
+
+	/** Инициализировать проекцию.*/
+	void setProjection(const std::vector<std::vector<Pixel>> & vec);
+	
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 };

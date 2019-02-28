@@ -63,7 +63,7 @@ Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height)
 }
 
 /** Инициализировать исходное изображение.*/
-void Paint::setImage(const std::vector<std::vector<double>> & vec)
+void Paint::setImage(const std::vector<std::vector<Pixel>> & vec)
 {
 	_vecImage.clear();
 	_vecImage = vec;
@@ -88,22 +88,18 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		size_t width = _vecImage[0].size();
 		size_t height = _vecImage.size();
+		Bitmap bmpBuffer(_xmax, _ymax);
 		for (size_t i = 0; i < height; ++i)
 		{
 			for (size_t j = 0; j < width; ++j)
 			{
-				double val = _vecImage[i][j];
 				Color color;
-				color = Color::MakeARGB(255 - val, 0, 0, 0);
-				SolidBrush brush(color);
-				grBmp.FillRectangle(&brush,
-					Trans_X(lpDrawItemStruct, j),
-					Trans_Y(lpDrawItemStruct, i),
-					Width(lpDrawItemStruct, 1),
-					Height(lpDrawItemStruct, 1));
+				color = Color::MakeARGB(255, _vecImage[i][j].red, _vecImage[i][j].green, _vecImage[i][j].blue);
+				bmpBuffer.SetPixel(j, height - 1 - i, color);
 			}
 		}
+
+		Rect rect(0, 0, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+		gr.DrawImage(&bmpBuffer, rect);
 	}
-	
-	gr.DrawImage(&bmp, 0, 0);
 }

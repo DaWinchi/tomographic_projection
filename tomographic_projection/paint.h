@@ -1,5 +1,6 @@
 #pragma once
 #include "afxwin.h"
+#include "pixel.h"
 #include <vector>
 
 class Paint : public CStatic
@@ -12,7 +13,7 @@ private:
 		_ymin, _ymax,   // Минимальное и максимальное значение по у
 		_step_x, _step_y;   // Шаг по х и у
 	/** Исходное изображение(сигнал).*/
-	std::vector<std::vector<double>> _vecImage;
+	std::vector<std::vector<Pixel>> _vecImage;
 	
 
 public:
@@ -33,7 +34,7 @@ public:
 	Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float width);
 	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height);
 	/** Инициализировать исходное изображение.*/
-	void setImage(const std::vector<std::vector<double>> & vec);
+	void setImage(const std::vector<std::vector<Pixel>> & vec);
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 };

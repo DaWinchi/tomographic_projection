@@ -1,6 +1,5 @@
 #pragma once
 #include "afxwin.h"
-#include "pixel.h"
 #include <vector>
 
 class Paint : public CStatic
@@ -14,9 +13,9 @@ private:
 		_step_x, _step_y;   // Шаг по х и у
 
 	/** Исходное изображение(сигнал).*/
-	std::vector<std::vector<Pixel>> _vecImage;
+	std::vector<std::vector<double>> _vecImage;
 	/** Томографическая проеция.*/
-	std::vector<std::vector<Pixel>> _vecTomographicProjection;
+	std::vector<std::vector<double>> _vecTomographicProjection;
 
 
 public:
@@ -37,10 +36,10 @@ public:
 	Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float width);
 	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height);
 	/** Инициализировать исходное изображение.*/
-	void setImage(const std::vector<std::vector<Pixel>> & vec);
+	void setImage(const std::vector<std::vector<double>> & vec);
 
 	/** Инициализировать проекцию.*/
-	void setProjection(const std::vector<std::vector<Pixel>> & vec);
+	void setProjection(const std::vector<std::vector<double>> & vec);
 	
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);

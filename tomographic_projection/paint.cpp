@@ -63,14 +63,14 @@ Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height)
 }
 
 /** Инициализировать исходное изображение.*/
-void Paint::setImage(const std::vector<std::vector<Pixel>> & vec)
+void Paint::setImage(const std::vector<std::vector<double>> & vec)
 {
 	_vecImage.clear();
 	_vecImage = vec;
 }
 
 /** Инициализировать проекцию.*/
-void Paint::setProjection(const std::vector<std::vector<Pixel>> & vec)
+void Paint::setProjection(const std::vector<std::vector<double>> & vec)
 {
 	_vecTomographicProjection.clear();
 	_vecTomographicProjection = vec;
@@ -95,7 +95,7 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 			for (size_t j = 0; j < width; ++j)
 			{
 				Color color;
-				color = Color::MakeARGB(255, _vecImage[i][j].red, _vecImage[i][j].green, _vecImage[i][j].blue);
+				color = Color::MakeARGB(255, _vecImage[i][j], _vecImage[i][j], _vecImage[i][j]);
 				bmpBuffer.SetPixel(j, height - 1 - i, color);
 			}
 		}
@@ -114,7 +114,7 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 			for (std::size_t j = 0; j < width; ++j)
 			{
 				Color color;
-				color = Color::MakeARGB(255, _vecImage[i][j].red, _vecImage[i][j].green, _vecImage[i][j].blue);
+				color = Color::MakeARGB(255, _vecImage[i][j], _vecImage[i][j], _vecImage[i][j]);
 				bmpBuffer.SetPixel(j, height - 1 - i, color);
 			}
 		}

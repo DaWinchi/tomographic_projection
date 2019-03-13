@@ -2,6 +2,13 @@
 #include "afxwin.h"
 #include <vector>
 
+/** Структура - комплексное число.*/
+struct cmplx
+{
+	double real;
+	double image;
+};
+
 class Paint : public CStatic
 {
 private:
@@ -31,10 +38,12 @@ public:
 	Gdiplus::REAL Trans_X(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL x);
 	/** Функция преобразования у к пиксельному формату.*/
 	Gdiplus::REAL Trans_Y(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL y);
+
 	Gdiplus::REAL Width(LPDRAWITEMSTRUCT lpDrawItemStruct, float width);
 	Gdiplus::REAL Height(LPDRAWITEMSTRUCT lpDrawItemStruct, float width);
 	Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float width);
 	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height);
+
 	/** Инициализировать исходное изображение.*/
 	void setImage(const std::vector<std::vector<double>> & vec);
 

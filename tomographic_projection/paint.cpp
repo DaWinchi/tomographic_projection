@@ -90,13 +90,13 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		size_t width = _vecImage[0].size();
 		size_t height = _vecImage.size();
 		Bitmap bmpBuffer(_xmax, _ymax);
-		for (size_t i = 0; i < height; ++i)
+		for (size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
 		{
-			for (size_t j = 0; j < width; ++j)
+			for (size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
 			{
 				Color color;
-				color = Color::MakeARGB(255, _vecImage[i][j], _vecImage[i][j], _vecImage[i][j]);
-				bmpBuffer.SetPixel(j, height - 1 - i, color);
+				color = Color::MakeARGB(255, _vecImage[idxHeight][idxWidth], _vecImage[idxHeight][idxWidth], _vecImage[idxHeight][idxWidth]);
+				bmpBuffer.SetPixel(idxWidth, height - 1 - idxHeight, color);
 			}
 		}
 
@@ -109,13 +109,16 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		std::size_t width = _vecTomographicProjection[0].size();
 		std::size_t height = _vecTomographicProjection.size();
 		Bitmap bmpBuffer(_xmax, _ymax);
-		for (std::size_t i = 0; i < height; ++i)
+		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
 		{
-			for (std::size_t j = 0; j < width; ++j)
+			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
 			{
 				Color color;
-				color = Color::MakeARGB(255, _vecImage[i][j], _vecImage[i][j], _vecImage[i][j]);
-				bmpBuffer.SetPixel(j, height - 1 - i, color);
+				color = Color::MakeARGB(255, 
+					_vecTomographicProjection[idxHeight][idxWidth], 
+					_vecTomographicProjection[idxHeight][idxWidth], 
+					_vecTomographicProjection[idxHeight][idxWidth]);
+				bmpBuffer.SetPixel(idxWidth, idxHeight, color);
 			}
 		}
 

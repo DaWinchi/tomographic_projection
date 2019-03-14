@@ -23,6 +23,8 @@ private:
 	std::vector<std::vector<double>> _vecImage;
 	/** Томографическая проеция.*/
 	std::vector<std::vector<double>> _vecTomographicProjection;
+	/** Восстановленное изображение(сигнал).*/
+	std::vector<std::vector<cmplx>> _vecImageRestored;
 
 
 public:
@@ -49,6 +51,9 @@ public:
 
 	/** Инициализировать проекцию.*/
 	void setProjection(const std::vector<std::vector<double>> & vec);
+
+	/** Инициализировать восстановленное изображение.*/
+	void setImageRestored(const std::vector<std::vector<cmplx>> & vec);
 	
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);

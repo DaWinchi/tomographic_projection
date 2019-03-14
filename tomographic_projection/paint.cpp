@@ -76,6 +76,25 @@ void Paint::setProjection(const std::vector<std::vector<double>> & vec)
 	_vecTomographicProjection = vec;
 }
 
+/** Инициализировать восстановленное изображение.*/
+void Paint::setImageRestored(const std::vector<std::vector<cmplx>> & vec)
+{
+	_vecImageRestored.clear();
+	
+	std::size_t height = vec.size();
+	std::size_t width = vec[0].size();
+	_vecImageRestored.resize(height, std::vector<cmplx>(width));
+
+	for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
+	{
+		for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
+		{
+			_vecImageRestored[idxHeight][idxWidth].real = vec[idxHeight][idxWidth].real;
+			_vecImageRestored[idxHeight][idxWidth].image = vec[idxHeight][idxWidth].image;
+		}
+	}
+}
+
 /** Функия отрисовки.*/
 void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
@@ -118,6 +137,28 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 					_vecTomographicProjection[idxHeight][idxWidth], 
 					_vecTomographicProjection[idxHeight][idxWidth], 
 					_vecTomographicProjection[idxHeight][idxWidth]);
+				bmpBuffer.SetPixel(idxWidth, idxHeight, color);
+			}
+		}
+
+		Rect rect(0, 0, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+		gr.DrawImage(&bmpBuffer, rect);
+	}
+
+	if (!_vecImageRestored.empty())
+	{
+		std::size_t width = _vecImageRestored[0].size();
+		std::size_t height = _vecImageRestored.size();
+		Bitmap bmpBuffer(_xmax, _ymax);
+		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
+		{
+			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
+			{
+				Color color;
+				color = Color::MakeARGB(255,
+					_vecImageRestored[idxHeight][idxWidth].real,
+					_vecImageRestored[idxHeight][idxWidth].real,
+					_vecImageRestored[idxHeight][idxWidth].real);
 				bmpBuffer.SetPixel(idxWidth, idxHeight, color);
 			}
 		}

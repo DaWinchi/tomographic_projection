@@ -21,7 +21,7 @@ Paint::~Paint()
 }
 
 /** Функция обмена информацией между классами.*/
-void Paint::exchange(double left, double right, double low, double up)
+void Paint::exchange(float left, float right, float low, float up)
 {
 	_xmin = left;
 	_xmax = right;
@@ -63,36 +63,38 @@ Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height)
 }
 
 /** Инициализировать исходное изображение.*/
-void Paint::setImage(const std::vector<std::vector<double>> & vec)
+void Paint::setImage(const std::vector<std::vector<float>> & vec)
 {
 	_vecImage.clear();
 	_vecImage = vec;
 }
 
 /** Инициализировать проекцию.*/
-void Paint::setProjection(const std::vector<std::vector<double>> & vec)
+void Paint::setProjection(const std::vector<std::vector<float>> & vec)
 {
 	_vecTomographicProjection.clear();
 	_vecTomographicProjection = vec;
 }
 
 /** Инициализировать восстановленное изображение.*/
-void Paint::setImageRestored(const std::vector<std::vector<cmplx>> & vec)
+void Paint::setImageRestored(const std::vector<std::vector<float>> & vec)
 {
 	_vecImageRestored.clear();
-	
-	std::size_t height = vec.size();
-	std::size_t width = vec[0].size();
-	_vecImageRestored.resize(height, std::vector<cmplx>(width));
+	_vecImageRestored = vec;
+}
 
-	for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
-	{
-		for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
-		{
-			_vecImageRestored[idxHeight][idxWidth].real = vec[idxHeight][idxWidth].real;
-			_vecImageRestored[idxHeight][idxWidth].image = vec[idxHeight][idxWidth].image;
-		}
-	}
+/** Инициализировать FFT.*/
+void Paint::setFFT(const std::vector<std::vector<float>> & vec)
+{
+	_vecFFT.clear();
+	_vecFFT = vec;
+}
+
+/** Инициализировать FFT translated.*/
+void Paint::setFFTTranslated(const std::vector<std::vector<float>> & vec)
+{
+	_vecFFTTranslated.clear();
+	_vecFFTTranslated = vec;
 }
 
 /** Функия отрисовки.*/
@@ -108,14 +110,17 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		size_t width = _vecImage[0].size();
 		size_t height = _vecImage.size();
-		Bitmap bmpBuffer(_xmax, _ymax);
+		Bitmap bmpBuffer(static_cast<INT>(_xmax), static_cast<INT>(_ymax));
 		for (size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
 		{
 			for (size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
 			{
 				Color color;
-				color = Color::MakeARGB(255, _vecImage[idxHeight][idxWidth], _vecImage[idxHeight][idxWidth], _vecImage[idxHeight][idxWidth]);
-				bmpBuffer.SetPixel(idxWidth, height - 1 - idxHeight, color);
+				color = Color::MakeARGB(static_cast<BYTE>(255), 
+					static_cast<BYTE>(_vecImage[idxHeight][idxWidth]), 
+					static_cast<BYTE>(_vecImage[idxHeight][idxWidth]), 
+					static_cast<BYTE>(_vecImage[idxHeight][idxWidth]));
+				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
 			}
 		}
 
@@ -127,17 +132,17 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		std::size_t width = _vecTomographicProjection[0].size();
 		std::size_t height = _vecTomographicProjection.size();
-		Bitmap bmpBuffer(_xmax, _ymax);
+		Bitmap bmpBuffer(static_cast<INT>(_xmax), static_cast<INT>(_ymax));
 		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
 		{
 			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
 			{
 				Color color;
-				color = Color::MakeARGB(255, 
-					_vecTomographicProjection[idxHeight][idxWidth], 
-					_vecTomographicProjection[idxHeight][idxWidth], 
-					_vecTomographicProjection[idxHeight][idxWidth]);
-				bmpBuffer.SetPixel(idxWidth, idxHeight, color);
+				color = Color::MakeARGB(static_cast<BYTE>(255),
+					static_cast<BYTE>(_vecTomographicProjection[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecTomographicProjection[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecTomographicProjection[idxHeight][idxWidth]));
+				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
 			}
 		}
 
@@ -149,17 +154,61 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		std::size_t width = _vecImageRestored[0].size();
 		std::size_t height = _vecImageRestored.size();
-		Bitmap bmpBuffer(_xmax, _ymax);
+		Bitmap bmpBuffer(static_cast<INT>(_xmax), static_cast<INT>(_ymax));
 		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
 		{
 			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
 			{
 				Color color;
-				color = Color::MakeARGB(255,
-					_vecImageRestored[idxHeight][idxWidth].real,
-					_vecImageRestored[idxHeight][idxWidth].real,
-					_vecImageRestored[idxHeight][idxWidth].real);
-				bmpBuffer.SetPixel(idxWidth, idxHeight, color);
+				color = Color::MakeARGB(static_cast<BYTE>(255),
+					static_cast<BYTE>(_vecImageRestored[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecImageRestored[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecImageRestored[idxHeight][idxWidth]));
+				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
+			}
+		}
+
+		Rect rect(0, 0, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+		gr.DrawImage(&bmpBuffer, rect);
+	}
+
+	if (!_vecFFT.empty())
+	{
+		std::size_t width = _vecFFT[0].size();
+		std::size_t height = _vecFFT.size();
+		Bitmap bmpBuffer(static_cast<INT>(_xmax), static_cast<INT>(_ymax));
+		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
+		{
+			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
+			{
+				Color color;
+				color = Color::MakeARGB(static_cast<BYTE>(255),
+					static_cast<BYTE>(_vecFFT[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecFFT[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecFFT[idxHeight][idxWidth]));
+				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
+			}
+		}
+
+		Rect rect(0, 0, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+		gr.DrawImage(&bmpBuffer, rect);
+	}
+
+	if (!_vecFFTTranslated.empty())
+	{
+		std::size_t width = _vecFFTTranslated[0].size();
+		std::size_t height = _vecFFTTranslated.size();
+		Bitmap bmpBuffer(static_cast<INT>(_xmax), static_cast<INT>(_ymax));
+		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
+		{
+			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
+			{
+				Color color;
+				color = Color::MakeARGB(static_cast<BYTE>(255),
+					static_cast<BYTE>(_vecFFTTranslated[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecFFTTranslated[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecFFTTranslated[idxHeight][idxWidth]));
+				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
 			}
 		}
 

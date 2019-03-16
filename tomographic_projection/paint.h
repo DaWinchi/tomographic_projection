@@ -5,8 +5,8 @@
 /** Структура - комплексное число.*/
 struct cmplx
 {
-	double real;
-	double image;
+	float real;
+	float image;
 };
 
 class Paint : public CStatic
@@ -15,16 +15,20 @@ private:
 	// Объект для инициализации GDI+
 	ULONG_PTR _token;
 
-	double _xmin, _xmax,   // Минимальное и максимальное значение по х
+	float _xmin, _xmax,   // Минимальное и максимальное значение по х
 		_ymin, _ymax,   // Минимальное и максимальное значение по у
 		_step_x, _step_y;   // Шаг по х и у
 
 	/** Исходное изображение(сигнал).*/
-	std::vector<std::vector<double>> _vecImage;
+	std::vector<std::vector<float>> _vecImage;
 	/** Томографическая проеция.*/
-	std::vector<std::vector<double>> _vecTomographicProjection;
+	std::vector<std::vector<float>> _vecTomographicProjection;
 	/** Восстановленное изображение(сигнал).*/
-	std::vector<std::vector<cmplx>> _vecImageRestored;
+	std::vector<std::vector<float>> _vecImageRestored;
+	/** FFT.*/
+	std::vector<std::vector<float>> _vecFFT;
+	/** FFT translated.*/
+	std::vector<std::vector<float>> _vecFFTTranslated;
 
 
 public:
@@ -34,7 +38,7 @@ public:
 	~Paint();
 
 	/** Функция обмена информацией между классами.*/
-	void exchange(double left, double right, double low, double up);
+	void exchange(float left, float right, float low, float up);
 
 	/** Функция преобразования х к пиксельному формату.*/
 	Gdiplus::REAL Trans_X(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL x);
@@ -47,13 +51,19 @@ public:
 	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height);
 
 	/** Инициализировать исходное изображение.*/
-	void setImage(const std::vector<std::vector<double>> & vec);
+	void setImage(const std::vector<std::vector<float>> & vec);
 
 	/** Инициализировать проекцию.*/
-	void setProjection(const std::vector<std::vector<double>> & vec);
+	void setProjection(const std::vector<std::vector<float>> & vec);
 
 	/** Инициализировать восстановленное изображение.*/
-	void setImageRestored(const std::vector<std::vector<cmplx>> & vec);
+	void setImageRestored(const std::vector<std::vector<float>> & vec);
+
+	/** Инициализировать восстановленное изображение.*/
+	void setFFT(const std::vector<std::vector<float>> & vec);
+
+	/** Инициализировать восстановленное изображение.*/
+	void setFFTTranslated(const std::vector<std::vector<float>> & vec);
 	
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);

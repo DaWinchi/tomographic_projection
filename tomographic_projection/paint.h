@@ -1,13 +1,14 @@
 #pragma once
 #include "afxwin.h"
 #include <vector>
+#include <complex>
 
 /** Структура - комплексное число.*/
-struct cmplx
-{
-	float real;
-	float image;
-};
+//struct cmplx
+//{
+//	float real;
+//	float image;
+//};
 
 class Paint : public CStatic
 {

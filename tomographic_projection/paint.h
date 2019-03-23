@@ -30,6 +30,8 @@ private:
 	std::vector<std::vector<float>> _vecFFT;
 	/** FFT translated.*/
 	std::vector<std::vector<float>> _vecFFTTranslated;
+	/** FFT 2D.*/
+	std::vector<std::vector<float>> _vecFFT2D;
 
 
 public:
@@ -65,6 +67,9 @@ public:
 
 	/** Инициализировать восстановленное изображение.*/
 	void setFFTTranslated(const std::vector<std::vector<float>> & vec);
+
+	/** Инициализировать FFT 2D.*/
+	void setFFT2D(const std::vector<std::vector<float>> & vec);
 	
 	/** Функия отрисовки.*/
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);

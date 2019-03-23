@@ -97,6 +97,13 @@ void Paint::setFFTTranslated(const std::vector<std::vector<float>> & vec)
 	_vecFFTTranslated = vec;
 }
 
+/** Инициализировать FFT translated.*/
+void Paint::setFFT2D(const std::vector<std::vector<float>> & vec)
+{
+	_vecFFT2D.clear();
+	_vecFFT2D = vec;
+}
+
 /** Функия отрисовки.*/
 void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
@@ -208,6 +215,28 @@ void Paint::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 					static_cast<BYTE>(_vecFFTTranslated[idxHeight][idxWidth]),
 					static_cast<BYTE>(_vecFFTTranslated[idxHeight][idxWidth]),
 					static_cast<BYTE>(_vecFFTTranslated[idxHeight][idxWidth]));
+				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
+			}
+		}
+
+		Rect rect(0, 0, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+		gr.DrawImage(&bmpBuffer, rect);
+	}
+
+	if (!_vecFFT2D.empty())
+	{
+		std::size_t width = _vecFFT2D[0].size();
+		std::size_t height = _vecFFT2D.size();
+		Bitmap bmpBuffer(static_cast<INT>(_xmax), static_cast<INT>(_ymax));
+		for (std::size_t idxHeight{ 0U }; idxHeight < height; ++idxHeight)
+		{
+			for (std::size_t idxWidth{ 0U }; idxWidth < width; ++idxWidth)
+			{
+				Color color;
+				color = Color::MakeARGB(static_cast<BYTE>(255),
+					static_cast<BYTE>(_vecFFT2D[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecFFT2D[idxHeight][idxWidth]),
+					static_cast<BYTE>(_vecFFT2D[idxHeight][idxWidth]));
 				bmpBuffer.SetPixel(static_cast<INT>(idxWidth), static_cast<INT>(idxHeight), color);
 			}
 		}

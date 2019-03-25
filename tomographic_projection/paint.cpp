@@ -21,7 +21,7 @@ Paint::~Paint()
 }
 
 /** Функция обмена информацией между классами.*/
-void Paint::exchange(float left, float right, float low, float up)
+void Paint::exchange(double left, double right, double low, double up)
 {
 	_xmin = left;
 	_xmax = right;
@@ -33,72 +33,72 @@ void Paint::exchange(float left, float right, float low, float up)
 /** Преобразование х к пиксельному формату.*/
 Gdiplus::REAL Paint::Trans_X(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL x)
 {
-	return (Gdiplus::REAL)(lpDrawItemStruct->rcItem.right) / (Gdiplus::REAL)(_xmax - _xmin) * ((x)-_xmin);
+	return (Gdiplus::REAL)(lpDrawItemStruct->rcItem.right) / (Gdiplus::REAL)(_xmax - _xmin) * ((x) -(Gdiplus::REAL)_xmin);
 }
 
 /** Преобразование у к пиксельному формату.*/
 Gdiplus::REAL Paint::Trans_Y(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL y)
 {
-	return -(Gdiplus::REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * ((y)-_ymax);
+	return -(Gdiplus::REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * ((y) - (Gdiplus::REAL)_ymax);
 }
 
-Gdiplus::REAL Paint::Width(LPDRAWITEMSTRUCT lpDrawItemStruct, float width)
+Gdiplus::REAL Paint::Width(LPDRAWITEMSTRUCT lpDrawItemStruct, double width)
 {
-	return (REAL)(lpDrawItemStruct->rcItem.right) / (_xmax - _xmin) * width;
+	return (REAL)(lpDrawItemStruct->rcItem.right) / (Gdiplus::REAL)(_xmax - _xmin) * (Gdiplus::REAL)width;
 }
 
-Gdiplus::REAL Paint::Height(LPDRAWITEMSTRUCT lpDrawItemStruct, float height)
+Gdiplus::REAL Paint::Height(LPDRAWITEMSTRUCT lpDrawItemStruct, double height)
 {
-	return (REAL)(lpDrawItemStruct->rcItem.bottom) / (_ymax - _ymin) * height;
+	return (REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * (Gdiplus::REAL)height;
 }
 
-Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float width)
+Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, double width)
 {
-	return (REAL)(lpDrawItemStruct->rcItem.right) / (_xmax - _xmin) * width;
+	return (REAL)(lpDrawItemStruct->rcItem.right) / (Gdiplus::REAL)(_xmax - _xmin) * (Gdiplus::REAL)width;
 }
 
-Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, float height)
+Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, double height)
 {
-	return -(REAL)(lpDrawItemStruct->rcItem.bottom) / (_ymax - _ymin) * height;
+	return -(REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * (Gdiplus::REAL)height;
 }
 
 /** Инициализировать исходное изображение.*/
-void Paint::setImage(const std::vector<std::vector<float>> & vec)
+void Paint::setImage(const std::vector<std::vector<double>> & vec)
 {
 	_vecImage.clear();
 	_vecImage = vec;
 }
 
 /** Инициализировать проекцию.*/
-void Paint::setProjection(const std::vector<std::vector<float>> & vec)
+void Paint::setProjection(const std::vector<std::vector<double>> & vec)
 {
 	_vecTomographicProjection.clear();
 	_vecTomographicProjection = vec;
 }
 
 /** Инициализировать восстановленное изображение.*/
-void Paint::setImageRestored(const std::vector<std::vector<float>> & vec)
+void Paint::setImageRestored(const std::vector<std::vector<double>> & vec)
 {
 	_vecImageRestored.clear();
 	_vecImageRestored = vec;
 }
 
 /** Инициализировать FFT.*/
-void Paint::setFFT(const std::vector<std::vector<float>> & vec)
+void Paint::setFFT(const std::vector<std::vector<double>> & vec)
 {
 	_vecFFT.clear();
 	_vecFFT = vec;
 }
 
 /** Инициализировать FFT translated.*/
-void Paint::setFFTTranslated(const std::vector<std::vector<float>> & vec)
+void Paint::setFFTTranslated(const std::vector<std::vector<double>> & vec)
 {
 	_vecFFTTranslated.clear();
 	_vecFFTTranslated = vec;
 }
 
 /** Инициализировать FFT translated.*/
-void Paint::setFFT2D(const std::vector<std::vector<float>> & vec)
+void Paint::setFFT2D(const std::vector<std::vector<double>> & vec)
 {
 	_vecFFT2D.clear();
 	_vecFFT2D = vec;

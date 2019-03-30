@@ -7,10 +7,6 @@ struct Projection
 {
 	// массив значений проекции для конкретного угла theta
 	std::vector<double> vecSpecificProjection;
-	// конкретный угол
-	double theta;
-	// массив значений
-	std::vector<double> s;
 	// матрица коэффициентов (с 0 и 1)
 	std::vector<std::vector<std::vector<int>>> vecCoeffs;
 };

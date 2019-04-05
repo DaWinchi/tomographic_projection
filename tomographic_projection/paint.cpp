@@ -42,26 +42,6 @@ Gdiplus::REAL Paint::Trans_Y(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL y)
 	return -(Gdiplus::REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * ((y) - (Gdiplus::REAL)_ymax);
 }
 
-Gdiplus::REAL Paint::Width(LPDRAWITEMSTRUCT lpDrawItemStruct, double width)
-{
-	return (REAL)(lpDrawItemStruct->rcItem.right) / (Gdiplus::REAL)(_xmax - _xmin) * (Gdiplus::REAL)width;
-}
-
-Gdiplus::REAL Paint::Height(LPDRAWITEMSTRUCT lpDrawItemStruct, double height)
-{
-	return (REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * (Gdiplus::REAL)height;
-}
-
-Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, double width)
-{
-	return (REAL)(lpDrawItemStruct->rcItem.right) / (Gdiplus::REAL)(_xmax - _xmin) * (Gdiplus::REAL)width;
-}
-
-Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, double height)
-{
-	return -(REAL)(lpDrawItemStruct->rcItem.bottom) / (Gdiplus::REAL)(_ymax - _ymin) * (Gdiplus::REAL)height;
-}
-
 /** Инициализировать исходное изображение.*/
 void Paint::setImage(const std::vector<std::vector<double>> & vec)
 {

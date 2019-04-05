@@ -47,13 +47,9 @@ public:
 
 	/** Функция преобразования х к пиксельному формату.*/
 	Gdiplus::REAL Trans_X(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL x);
+
 	/** Функция преобразования у к пиксельному формату.*/
 	Gdiplus::REAL Trans_Y(LPDRAWITEMSTRUCT lpDrawItemStruct, Gdiplus::REAL y);
-
-	Gdiplus::REAL Width(LPDRAWITEMSTRUCT lpDrawItemStruct, double width);
-	Gdiplus::REAL Height(LPDRAWITEMSTRUCT lpDrawItemStruct, double width);
-	Gdiplus::REAL Paint::W_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, double width);
-	Gdiplus::REAL Paint::H_Ellipse(LPDRAWITEMSTRUCT lpDrawItemStruct, double height);
 
 	/** Инициализировать исходное изображение.*/
 	void setImage(const std::vector<std::vector<double>> & vec);
